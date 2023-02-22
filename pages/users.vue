@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title primary-title>
+    <v-card-title primary-title class="flex-nowrap">
       <v-tabs v-model="tab" align-with-title>
         <v-tabs-slider color="yellow"></v-tabs-slider>
 
@@ -8,6 +8,8 @@
           {{ item }}
         </v-tab>
       </v-tabs>
+      <v-spacer></v-spacer>
+      <v-btn color="success">Add User</v-btn>
     </v-card-title>
     <v-card-text>
       <v-tabs-items v-model="tab">
@@ -148,12 +150,13 @@
             label="Amount"
             id="id"
             v-model="selected_user.amount"
+            :disabled="disabled_form"
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" @click="cancelReplanish">Cancel</v-btn>
-          <v-btn color="success" @click="replanishUserChash()">Submit</v-btn>
+          <v-btn color="red" :disabled="disabled_form" @click="cancelReplanish">Cancel</v-btn>
+          <v-btn color="success" :disabled="disabled_form" @click="replanishUserChash()">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -169,6 +172,7 @@ export default {
       tab: '',
       items: ['All Users', 'Inactive Users'],
       modal_replanish: false,
+      disabled_form: false,
       users_headers: [
         {
           text: '#',
@@ -300,10 +304,20 @@ export default {
       this.selected_user.amount = ''
       this.modal_replanish = false
     },
+
     replanishUserChash() {
-      this.$store.dispatch('uesrs/replanishCashUser', {
+      this.disabled_form = true
+      this.$store.dispatch('users/replanishCashUser', {
         ...this.selected_user,
         toast: this.$toast,
+        isCompleted: (res) => {
+          if (res.success) {
+            this.$toast.success(res.success.message)
+            this.disabled_form = false
+            this.cancelReplanish()
+            this.$store.dispatch('users/getUserList')
+          }
+        }
       })
     },
   },

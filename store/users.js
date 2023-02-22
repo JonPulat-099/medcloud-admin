@@ -17,7 +17,7 @@ export const mutations = {
       if (x.id == id) {
         return {
           ...x,
-          is_blocked: status,
+          is_blocked: +status,
         }
       }
       return x
@@ -41,7 +41,7 @@ export const actions = {
       })
   },
 
-  async getInactiveUsers({ commit }, users) {
+  getInactiveUsers({ commit }, users) {
     this.$axios
       .$get('/api/user/inactive')
       .then((result) => {
@@ -55,11 +55,12 @@ export const actions = {
       })
   },
 
-  async blockUser({ commit }, payload) {
+  blockUser({ commit }, payload) {
     const { id, toast, status } = payload
     this.$axios
       .$post('/api/user/block', {
         id,
+        type: String(+status),
       })
       .then((result) => {
         if (result?.success) {
@@ -72,17 +73,19 @@ export const actions = {
       })
   },
 
-  async replanishCashUser({ commit }, payload) {
-    const { id, toast, amount } = payload
+  replanishCashUser({ commit }, payload) {
+    const { id, toast, amount, isCompleted } = payload
     this.$axios
-      .$post('/api/replenish/balance', {
-        id,
-        amount,
+      .$get('/api/replenish/balance', {
+        params: {
+          id,
+          amount,
+        },
       })
       .then((result) => {
         if (result?.success) {
-          commit('setBlockField', { id, status })
-          toast.success('Succesfully Blocked User')
+          commit('setBlockField', { id, amount })
+          isCompleted(result)
         }
       })
       .catch((err) => {

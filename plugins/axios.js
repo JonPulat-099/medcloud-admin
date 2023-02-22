@@ -6,9 +6,9 @@ export default function ({ $axios, app, redirect }) {
   $axios.onError((error) => {
     const response = error?.response
     if (response?.status === 400) {
-      const { msg } = response?.data?.error
-      app.$toast.error(msg)
-      console.log('log error', app)
+      const { message } = response?.data?.error
+      console.log(response?.data?.error)
+      app.$toast.error(message)
     }
   })
   $axios.onResponse((response) => {})
