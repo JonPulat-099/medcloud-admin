@@ -86,6 +86,16 @@ export default {
           title: 'Media Files',
           to: '/media-files',
         },
+        {
+          icon: 'mdi-text-box-outline',
+          title: 'Products',
+          to: '/products',
+        },
+        {
+          icon: 'mdi-head-question-outline',
+          title: 'Questions',
+          to: '/questions',
+        },
       ],
       miniVariant: false,
       right: true,
