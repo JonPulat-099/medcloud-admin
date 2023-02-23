@@ -17,18 +17,28 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
+  ssr: true,
+
+  server: {
+    host: "0.0.0.0",
+    port: 8080
+  },
+
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~/plugins/axios.js' }],
+  plugins: [
+    { src: '~/plugins/axios.js' },
+    { src: '~/plugins/tiptap', mode: 'client' }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    // https://go.nuxtjs.dev/vuetify
   ],
-
+  
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -112,19 +122,12 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
         },
-        light: {
-          primary: '#008DD2',
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
-        },
       },
     },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    transpile: ['vuetify/lib', "tiptap-vuetify"]
+  },
 }

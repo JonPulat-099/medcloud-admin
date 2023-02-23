@@ -12,6 +12,7 @@
     "lintfix": "prettier --write --list-different ."
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "@nuxt/content": "^1.0.0",
     "@nuxtjs/auth-next": "5.0.0-1667386184.dfbbb54",
     "@nuxtjs/axios": "^5.13.6",
@@ -19,13 +20,14 @@
     "@nuxtjs/toast": "^3.3.1",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",
+    "tiptap-vuetify": "2.23.0",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
+    "@nuxtjs/vuetify": "^1.12.3",
     "vuetify": "^2.6.1"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.12.3",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "^2.5.1"
   }
