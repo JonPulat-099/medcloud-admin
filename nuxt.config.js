@@ -18,6 +18,8 @@ export default {
   css: [],
 
   ssr: true,
+  target: "static",
+  buildDir: "/dist",
 
   server: {
     host: "0.0.0.0",
