@@ -101,6 +101,10 @@ export default {
     product_items() {
       return this.$store.state.products.product_items
     }
+  },
+  beforeMount() {
+    const params = this.$router.params
+    this.$store.dispatch("products")
   }
 }
 </script>

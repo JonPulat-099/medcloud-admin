@@ -188,6 +188,15 @@
                 :value="false"
               ></v-checkbox>
             </v-flex>
+            <v-flex xs12>
+              <v-file-input
+                v-model="product.image"
+                show-size
+                label="File input"
+                truncate-length="30"
+                :disabled="disabled_form"
+              ></v-file-input>
+            </v-flex>
           </v-layout>
         </v-card-text>
         <v-card-actions>
@@ -227,6 +236,7 @@ export default {
         description: '',
         type: '',
         status: '',
+        image: null,
       },
       headers: [
         {
@@ -243,7 +253,7 @@ export default {
         },
         {
           text: 'Type',
-          align: 'center',
+          align: 'left',
           sortable: false,
           value: 'type',
         },
@@ -281,14 +291,26 @@ export default {
         description: '',
         type: '',
         status: '',
+        image: null
       }
     },
     createProduct() {
+      this.disabled_form = true
+      const formdata = new FormData()
+      for (let key of Object.keys(this.product)) {
+        if (key == 'status') {
+          formdata.append(key, this.product[key] ? 'active' : 'inactive')
+        } else {
+          formdata.append(key, this.product[key])
+        }
+      }
+      
       this.$store.dispatch('products/createProduct', {
-        data: this.product,
+        data: formdata,
         isCompleted: (res) => {
           if (res?.success) {
             this.$toast.success(res.success?.message)
+            this.$store.dispatch('products/getAllProducts')
           } else {
             this.$$toast.error(res.error.message)
           }

@@ -5,18 +5,18 @@ export const state = () => ({
 
 export const mutations = {
   setAllVideosList(state, list) {
-    state.all_videos = list[0]
+    state.all_videos = list
   },
 
   setAllImagesList(state, list) {
-    state.all_images = list[0]
+    state.all_images = list
   },
 }
 export const actions = {
   async getAllVideos({ commit }) {
     try {
       const list = await this.$axios.$get('/api/all/videos')
-      if (list?.[0].length) {
+      if (list?.length) {
         commit('setAllVideosList', list)
       }
     } catch (error) {
@@ -26,7 +26,7 @@ export const actions = {
   async getAllImages({ commit }) {
     try {
       const list = await this.$axios.$get('/api/all/photos')
-      if (list?.[0].length) {
+      if (list?.length) {
         commit('setAllImagesList', list)
       }
     } catch (error) {
