@@ -3,7 +3,7 @@
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
-      :clipped="clipped"
+      :clipped="true"
       fixed
       app
     >
@@ -22,15 +22,15 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item>
+          <v-btn color="success" @click="refreshToken">RefreshToken</v-btn>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar clipped-left fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>mdi-application</v-icon>
       </v-btn>
       <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
@@ -64,11 +64,11 @@
 </template>
 
 <script>
+
 export default {
   name: 'DefaultLayout',
   data() {
     return {
-      clipped: false,
       drawer: false,
       fixed: false,
       items: [
@@ -97,6 +97,16 @@ export default {
           title: 'Questions',
           to: '/questions',
         },
+        {
+          icon: 'mdi-folder-settings-outline',
+          title: 'Course',
+          to: '/courses',
+        },
+        {
+          icon: 'mdi-database-settings-outline',
+          title: 'Lessons',
+          to: '/lessons',
+        },
       ],
       miniVariant: false,
       right: true,
@@ -104,5 +114,11 @@ export default {
       title: 'Vuetify.js',
     }
   },
+  methods: {
+    refreshToken() {
+      this.$auth.refreshTokens()
+
+    }
+  }
 }
 </script>

@@ -1,32 +1,8 @@
 export const state = () => ({
   products: [],
-  product_items: [
-    {
-      id: 2,
-      title: 'nisi porro',
-      product_id: '3',
-      status: 'active',
-      created_at: '2023-02-21T11:55:23.000000Z',
-      updated_at: '2023-02-21T11:55:23.000000Z',
-    },
-    {
-      id: 4,
-      title: 'deleniti asperiores',
-      product_id: '3',
-      status: 'active',
-      created_at: '2023-02-21T11:55:23.000000Z',
-      updated_at: '2023-02-21T11:55:23.000000Z',
-    },
-    {
-      id: 6,
-      title: 'qui enim',
-      product_id: '3',
-      status: 'inactive',
-      created_at: '2023-02-21T11:55:23.000000Z',
-      updated_at: '2023-02-21T11:55:23.000000Z',
-    },
-  ],
+  product_items: [],
   product_info: {},
+  product_item_tariffs: [],
 })
 
 export const mutations = {
@@ -36,6 +12,7 @@ export const mutations = {
 
   setProductInfo(state, info) {
     state.product_info = info
+    state.product_items = info.items
   },
 }
 
@@ -59,6 +36,7 @@ export const actions = {
     this.$axios
       .$get('/api/product/get/' + id)
       .then((resp) => {
+        console.log(11, resp)
         if (Object.keys(resp)?.length) {
           commit('setProductInfo', resp)
         }
@@ -66,6 +44,10 @@ export const actions = {
       .catch((err) => {
         console.log('error', err)
       })
+  },
+
+  getProductTariffs({ commit }) {
+    this.$axios.$get('/')
   },
 
   createProduct({ commit }, payload) {
@@ -80,7 +62,19 @@ export const actions = {
         isCompleted(resp)
       })
       .catch((err) => {
-        console.log(err)
+        isCompleted(err)
+      })
+  },
+
+  createProductItem({ commit }, payload) {
+    const { data, isCompleted } = payload
+    this.$axios
+      .$post('/api/product/item/create', data)
+      .then((resp) => {
+        isCompleted(resp)
+      })
+      .catch((err) => {
+        isCompleted(err)
       })
   },
 }

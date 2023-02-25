@@ -12,25 +12,31 @@ export default {
   name: 'ProductItem',
   layout: 'account',
   data() {
-    return {
-        breadcrumbs: [
-            {
-                text: "Products",
-                disabled: false,
-                href: "/products"
-            },
-            {
-                text: "Products name",
-                disabled: false,
-                href: "/products/test"
-            },
-            {
-                text: "Tariffs",
-                disabled: true,
-                href: "/products/test/tariffs"
-            },
-        ]
-    }
+    return {}
+  },
+  computed: {
+    breadcrumbs() {
+      return [
+        {
+          text: 'Products',
+          disabled: false,
+          href: '/products',
+        },
+        {
+          text: 'Products name',
+          disabled: false,
+          href: '/products/test',
+        },
+        {
+          text: 'Tariffs',
+          disabled: true,
+          href: '/products/test/tariffs',
+        },
+      ]
+    },
+  },
+  beforeMount() {
+    
   },
 }
 </script>

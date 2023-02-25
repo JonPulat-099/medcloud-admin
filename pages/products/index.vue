@@ -291,7 +291,7 @@ export default {
         description: '',
         type: '',
         status: '',
-        image: null
+        image: null,
       }
     },
     createProduct() {
@@ -301,18 +301,19 @@ export default {
         if (key == 'status') {
           formdata.append(key, this.product[key] ? 'active' : 'inactive')
         } else {
-          formdata.append(key, this.product[key])
+          if (this.product[key]) formdata.append(key, this.product[key])
         }
       }
-      
+
       this.$store.dispatch('products/createProduct', {
         data: formdata,
         isCompleted: (res) => {
           if (res?.success) {
             this.$toast.success(res.success?.message)
             this.$store.dispatch('products/getAllProducts')
+            this.modal_add_product = false
           } else {
-            this.$$toast.error(res.error.message)
+            this.$toast.error(res?.error?.message)
           }
           this.disabled_form = false
         },
