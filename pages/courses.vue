@@ -3,7 +3,7 @@
     <v-card-title primary-title class="flex-nowrap">
       All course
       <v-spacer></v-spacer>
-      <v-btn color="success">Add User</v-btn>
+      <v-btn color="success">Add Course</v-btn>
     </v-card-title>
     <v-card-text>
       <v-data-table
@@ -39,6 +39,7 @@
       </v-data-table>
     </v-card-text>
     <v-dialog
+      v-model="modal_add_course"
       scrollable
       persistent
       :overlay="false"
@@ -70,9 +71,8 @@ export default {
   layout: 'account',
   data() {
     return {
-      tab: '',
-      items: ['All Users', 'Inactive Users'],
       disabled_form: false,
+      modal_add_course: false,
       headers: [
         {
           text: '#',
@@ -106,10 +106,16 @@ export default {
     courses() {
       return this.$store.state.courses.all_courses
     },
+    products() {
+      return this.$store.state.products.products
+    }
   },
   watch: {},
   beforeMount() {
     this.$store.dispatch('courses/getAllCourses')
+  },
+  mounted() {
+    this.$store.dispatch("products/getAllProducts")
   },
   methods: {
     changeStatus(course) {

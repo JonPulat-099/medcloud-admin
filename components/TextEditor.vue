@@ -68,10 +68,24 @@ export default {
       HardBreak,
     ],
     // starting editor's content
-    content: `
-      <h1>Yay Headlines!</h1>
-      <p>All these <strong>cool tags</strong> are working now.</p>
-    `,
+    content: "",
   }),
+  watch: {
+    content(val) {
+      this.$emit("input", val)
+    }
+  }
 }
 </script>
+<style lang="scss">
+.tiptap-vuetify-editor {
+  border: 1px solid #000;
+  border-radius: 5px;
+  overflow: hidden;
+  .v-card {
+    .v-sheet {
+      box-shadow: none !important;
+    }
+  }
+}
+</style>

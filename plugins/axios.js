@@ -5,6 +5,7 @@ export default function ({ $axios, app, redirect }) {
   })
   $axios.onError((error) => {
     const response = error?.response
+    console.log(2, response);
     if (response?.status === 400) {
       if (response?.data?.error) {
         const { message } = response?.data?.error
@@ -18,7 +19,12 @@ export default function ({ $axios, app, redirect }) {
       }
 
       console.log(response?.data?.error)
+    } else if (response?.status === 401) {
+      console.log(3);
+      app.$auth.logout()
+      redirect("/login")
     }
   })
-  $axios.onResponse((response) => {})
+  $axios.onResponse((response) => {
+  })
 }
