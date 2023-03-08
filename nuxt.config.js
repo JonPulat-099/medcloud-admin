@@ -19,7 +19,7 @@ export default {
 
   ssr: true,
   target: "static",
-  buildDir: "/dist",
+  // buildDir: "/dist",
 
   server: {
     host: "0.0.0.0",

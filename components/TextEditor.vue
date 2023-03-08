@@ -87,5 +87,14 @@ export default {
       box-shadow: none !important;
     }
   }
+
+  &__content {
+    height: 250px;
+    max-height: 250px;
+
+    .ProseMirror {
+      height: inherit;
+    }
+  }
 }
 </style>

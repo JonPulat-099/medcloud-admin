@@ -24,4 +24,15 @@ export const actions = {
 
   setActiveStatus(_) {},
   setInactiveStatus(_, payload) {},
+
+  createLesson(_, payload) {
+    const { data, isCompleted } = payload
+    this.$axios
+      .$post('/api/lesson/create', data)
+      .then((res) => isCompleted(res))
+      .catch((err) => {
+        isCompleted(err)
+        console.log(err)
+      })
+  },
 }

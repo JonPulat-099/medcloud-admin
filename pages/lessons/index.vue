@@ -3,7 +3,7 @@
     <v-card-title primary-title class="flex-nowrap">
       All Lessons
       <v-spacer></v-spacer>
-      <v-btn color="success">Add Lesson</v-btn>
+      <v-btn color="success" @click="modal_add_lesson = true">Add Lesson</v-btn>
     </v-card-title>
     <v-card-text>
       <v-data-table
@@ -39,7 +39,7 @@
       </v-data-table>
     </v-card-text>
     <v-dialog
-      v-model="modal_add_course"
+      v-model="modal_add_lesson"
       scrollable
       persistent
       :overlay="false"
@@ -47,18 +47,40 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title primary-title> Add Course </v-card-title>
-        <v-card-text>
+        <v-card-title primary-title> Add Lesson </v-card-title>
+        <v-card-text class="py-2">
+          <v-combobox
+            v-model="course_id"
+            :items="courses"
+            item-value="id"
+            item-text="name"
+            dense
+            outlined
+            label="Course"
+          ></v-combobox>
           <v-text-field
-            label="Amount"
-            id="id"
+            v-model="lesson_name"
+            label="Name"
+            outlined
+            dense
             :disabled="disabled_form"
           ></v-text-field>
+          <div class="d-flex align-center flex-wrap">
+            <v-checkbox label="Status: " v-model="lesson_status" class="mr-2"></v-checkbox>
+            <v-chip :color="lesson_status ? 'green' : 'red'">{{  lesson_status ? 'Active' : 'Inactive'  }}</v-chip>
+          </div>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" :disabled="disabled_form">Cancel</v-btn>
-          <v-btn color="success" :disabled="disabled_form">Submit</v-btn>
+          <v-btn
+            color="red"
+            :disabled="disabled_form"
+            @click="modal_add_lesson = false"
+            >Cancel</v-btn
+          >
+          <v-btn color="success" :disabled="disabled_form" @click="createLesson"
+            >Create</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -72,7 +94,10 @@ export default {
   data() {
     return {
       disabled_form: false,
-      modal_add_course: false,
+      modal_add_lesson: false,
+      lesson_name: '',
+      course_id: '',
+      lesson_status: false,
       headers: [
         {
           text: '#',
@@ -107,7 +132,7 @@ export default {
       return this.$store.state.lessons.all_lessons
     },
     courses() {
-      return this.$store.state.products.products
+      return this.$store.state.courses.all_courses
     },
   },
   watch: {},
@@ -119,6 +144,31 @@ export default {
   },
   methods: {
     changeStatus(course) {},
+    createLesson() {
+      this.disabled_form = true
+      try {
+        const payload = {
+          data: {
+            course_id: this.course_id.id,
+            name: this.lesson_name,
+            status: this.lesson_status ? 'active' : 'inactive'
+          },
+          isCompleted: (res) => {
+            console.log(res)
+            if (res?.success) {
+              this.$toast.success(res.success.message)
+              this.modal_add_lesson = false
+            }
+            this.disabled_form = false
+          },
+        }
+
+        this.$store.dispatch('lessons/createLesson', payload)
+      } catch (e) {
+        this.disabled_form = false
+        console.error(e)
+      }
+    },
   },
 }
 </script>

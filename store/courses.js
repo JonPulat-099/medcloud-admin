@@ -38,4 +38,14 @@ export const actions = {
         console.log(err)
       })
   },
+  createCourse(_, payload) {
+    const { data, isCompleted } = payload
+    this.$axios
+      .$post('/api/course/create', data)
+      .then((res) => isCompleted(res))
+      .catch((err) => {
+        isCompleted(err)
+        console.log(err)
+      })
+  },
 }

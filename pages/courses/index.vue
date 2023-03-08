@@ -3,7 +3,7 @@
     <v-card-title primary-title class="flex-nowrap">
       All course
       <v-spacer></v-spacer>
-      <v-btn color="success">Add Course</v-btn>
+      <v-btn color="success" @click="$router.push('/courses/add')">Add Course</v-btn>
     </v-card-title>
     <v-card-text>
       <v-data-table
