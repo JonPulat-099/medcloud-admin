@@ -1,6 +1,12 @@
-export const state = () => ({})
+export const state = () => ({
+  list: []
+})
 
-export const mutations = {}
+export const mutations = {
+  setQuestions(state, list) {
+    state.list = list
+  }
+}
 
 export const actions = {
   addQuestion(_, payload) {
@@ -13,5 +19,21 @@ export const actions = {
       .catch((err) => {
         isCompleted(err)
       })
+  },
+
+  getQuestionByCourse({ commit }, payload) {
+    const { id, isCompleted } = payload
+    this.$axios
+      .$get('/api/course/questions/' + id)
+      .then((res) => isCompleted(res))
+      .catch((err) => isCompleted(err))
+  },
+
+  getQuestionByLesson({ commit }, payload) {
+    const { id, isCompleted } = payload
+    this.$axios
+      .$get('/api/lesson/questions/' + id)
+      .then((res) => isCompleted(res))
+      .catch((err) => isCompleted(err))
   },
 }

@@ -35,6 +35,16 @@
               item.is_blocked == '0' ? 'Block user' : 'Unblock user'
             }}</span>
           </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon @click="$router.push('/questions/add?lesson=' + item.id)" v-bind="attrs" v-on="on">
+                <v-icon medium>
+                  mdi-head-question-outline
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Questions</span>
+          </v-tooltip>
         </template>
       </v-data-table>
     </v-card-text>
