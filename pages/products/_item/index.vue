@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card elevation="0">
     <v-card-title primary-title>
       <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
       <v-spacer></v-spacer>

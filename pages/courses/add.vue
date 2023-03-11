@@ -1,5 +1,5 @@
 <template lang="">
-  <v-card>
+  <v-card elevation="0">
     <v-card-title primary-title class="mb-5">
       <v-btn color="success" class="ma-0 pa-0" @click.prevent="$router.push('/courses')">
         <v-icon>mdi-back</v-icon>

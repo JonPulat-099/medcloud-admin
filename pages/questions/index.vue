@@ -1,7 +1,9 @@
 <template>
-  <v-card>
+  <v-card elevation="0">
     <v-card-title primary-title>
       Questions
+      <v-spacer></v-spacer>
+      <v-btn color="success" @click="$router.push('/questions/add')">Add Question</v-btn>
     </v-card-title>
     <v-card-text>
       <v-layout row wrap justify-space-between class="ma-0">

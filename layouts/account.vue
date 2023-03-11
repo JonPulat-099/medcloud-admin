@@ -22,9 +22,9 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <!-- <v-list-item>
           <v-btn color="success" @click="refreshToken">RefreshToken</v-btn>
-        </v-list-item>
+        </v-list-item> -->
       </v-list>
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app>
@@ -104,7 +104,9 @@ export default {
       this.$auth.refreshTokens()
     },
 
-    logout() {},
+    async logout() {
+      await this.$auth.logout()
+    },
   },
 }
 </script>

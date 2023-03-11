@@ -1,5 +1,5 @@
 <template>
-    <v-card class="questions__section">
+    <v-card class="questions__section" elevation="0">
       <v-card-title primary-title> Add question </v-card-title>
       <v-card-text>
         <v-layout row wrap ma-0>

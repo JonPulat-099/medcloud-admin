@@ -18,18 +18,19 @@ export default {
   css: [],
 
   ssr: true,
-  target: "static",
-  // buildDir: "/dist",
+  target: 'static',
+  buildDir: '/dist',
 
   server: {
-    host: "0.0.0.0",
-    port: 8080
+    host: '0.0.0.0',
+    port: 8080,
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/mixins.js' },
     { src: '~/plugins/axios.js' },
-    { src: '~/plugins/tiptap', mode: 'client' }
+    { src: '~/plugins/tiptap', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -40,7 +41,7 @@ export default {
     '@nuxtjs/vuetify',
     // https://go.nuxtjs.dev/vuetify
   ],
-  
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -65,7 +66,7 @@ export default {
         scheme: 'refresh',
         token: {
           property: 'access_token',
-          maxAge: 31536000,
+          maxAge: 1800,
           global: true,
           // type: 'Bearer'
         },
@@ -130,6 +131,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['vuetify/lib', "tiptap-vuetify"]
+    transpile: ['vuetify/lib', 'tiptap-vuetify'],
   },
 }

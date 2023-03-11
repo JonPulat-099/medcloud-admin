@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card elevation="0">
     <v-card-title primary-title class="flex-nowrap">
       All Lessons
       <v-spacer></v-spacer>

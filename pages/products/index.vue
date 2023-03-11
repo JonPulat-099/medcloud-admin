@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card elevation="0">
     <v-card-title>
       Products
       <v-spacer></v-spacer>
@@ -84,7 +84,7 @@
 
               <v-img
                 height="250"
-                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                src="https://www.webstoresl.com/sellercenter/assets/images/no-product-image.png"
               ></v-img>
 
               <v-card-title>{{ p.title }}</v-card-title>
