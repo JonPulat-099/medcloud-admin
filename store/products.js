@@ -2,7 +2,7 @@ export const state = () => ({
   products: [],
   product_items: [],
   product_info: {},
-  product_item_tariffs: [],
+  product_item_info: [],
 })
 
 export const mutations = {
@@ -13,6 +13,10 @@ export const mutations = {
   setProductInfo(state, info) {
     state.product_info = info
     state.product_items = info.items
+  },
+
+  setProductItemDetails(state, info) {
+    state.product_item_info = info
   },
 }
 
@@ -46,8 +50,16 @@ export const actions = {
       })
   },
 
-  getProductTariffs({ commit }) {
-    this.$axios.$get('/')
+  getProductTariffs({ commit }, id) {
+    this.$axios
+      .$get('/api/product/item/get/' + id)
+      .then((res) => {
+        if (Array.isArray(res)) commit('setProductItemDetails', res)
+      })
+      .catch((err) => {
+        // do nothing
+        console.log(err)
+      })
   },
 
   createProduct({ commit }, payload) {
@@ -75,6 +87,19 @@ export const actions = {
       })
       .catch((err) => {
         isCompleted(err)
+      })
+  },
+
+  createTariff(_, payload) {
+    const { data, isCompleted } = payload
+    this.$axios
+      .$post('/api/product/tariff/create', data)
+      .then((res) => {
+        console.log(res)
+        isCompleted(res)
+      })
+      .catch((err) => {
+        isCompleted(res)
       })
   },
 }
