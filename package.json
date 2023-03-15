@@ -33,6 +33,6 @@
     "yarn-audit-fix": "^9.3.9"
   },
   "engines": {
-    "node": "16.19.1"
+    "node": "16.19.0"
   }
 }

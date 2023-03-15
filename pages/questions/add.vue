@@ -108,7 +108,7 @@
     },
     data() {
       return {
-        question: '',
+        question: 'Question hello world',
         question_id: '',
         correct: false,
         with_label: false,
@@ -120,48 +120,48 @@
             list: [
               {
                 label: '',
-                text: '',
+                text: 'Variant A',
               },
             ],
             question_id: '',
-            choice: '',
-            definiiton: '',
+            choice: '<p><strong>(Choice A) </strong>hEllo world  aaaaa lorem</p>',
+            definition: 'A',
           },
           {
             variant: 'B',
             list: [
               {
                 label: '',
-                text: '',
+                text: 'Variant B',
               },
             ],
             question_id: '',
-            choice: '',
-            definiiton: '',
+            choice: '<p><strong>(Choice B) </strong>hEllo world  aaaaa lorem</p>',
+            definition: 'B',
           },
           {
             variant: 'C',
             list: [
               {
                 label: '',
-                text: '',
+                text: 'Variant C',
               },
             ],
             question_id: '',
-            choice: '',
-            definiiton: '',
+            choice: '<p><strong>(Choice C) </strong>hEllo world  aaaaa lorem</p>',
+            definition: 'C',
           },
           {
             variant: 'D',
             list: [
               {
                 label: '',
-                text: '',
+                text: 'Variant D',
               },
             ],
             question_id: '',
-            choice: '',
-            definiiton: '',
+            choice: '<p><strong>(Choice D) </strong>hEllo world  aaaaa lorem</p>',
+            definition: 'D',
           },
         ],
       }
@@ -222,6 +222,7 @@
               if (res?.success) {
                 this.$toast.success(res.success.message)
                 this.question_id = res.success.id
+                this.addAnswers()
               }
             },
           }
@@ -229,6 +230,27 @@
           this.$store.dispatch('questions/addQuestion', payload)
         } catch (error) {}
       },
+
+      addAnswers() {
+        console.log(1);
+        const data = this.answers.map(x => ({
+          question_id: this.question_id,
+          label: JSON.stringify(x.list.map(y => y.label)),
+          text: JSON.stringify(x.list.map(y => y.text)),
+          choice: x.choice,
+          definition: x.variant,
+          correct: (x.variant === this.correct)
+        }))
+
+        const payload= {
+          data,
+          isCompleted: (res) => {
+            console.log(res);
+          }
+        }
+
+        this.$store.dispatch("questions/addAnswers", payload)
+      }
     },
   }
   </script>

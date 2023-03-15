@@ -1,11 +1,12 @@
 export const state = () => ({
-  list: []
+  list: [],
+  questions_list: [],
 })
 
 export const mutations = {
   setQuestions(state, list) {
     state.list = list
-  }
+  },
 }
 
 export const actions = {
@@ -35,5 +36,17 @@ export const actions = {
       .$get('/api/lesson/questions/' + id)
       .then((res) => isCompleted(res))
       .catch((err) => isCompleted(err))
+  },
+
+  addAnswers(_, payload) {
+    const { data, isCompleted } = payload
+    this.$axios
+      .$post('/api/answer/bulk/create', data)
+      .then((res) => {
+        isCompleted(res)
+      })
+      .catch((err) => {
+        isCompleted(err)
+      })
   },
 }
