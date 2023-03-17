@@ -1,10 +1,9 @@
 name: 'Deploy to Netlify'
 
-on: 
+on:
   push:
     branches:
       - 'master'
-
 
 jobs:
   deploy:
@@ -18,7 +17,7 @@ jobs:
           docker run --rm \
           --volume="$PWD:/app" \
           node:16-alpine sh -c "cd /app && npm install --global yarn || yarn install && yarn generate"
-          
+
       - name: Deploy to Netlify
         uses: netlify/actions/cli@master
         env:
@@ -47,4 +46,4 @@ jobs:
             await script({context, telegram: {
               token: process.env.TG_TOKEN,
               chat_id: process.env.TG_CHAT_ID
-            })
+            }})
