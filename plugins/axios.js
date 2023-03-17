@@ -1,4 +1,15 @@
-export default function ({ $axios, app, redirect }) {
+function deleteAllCookies() {
+  const cookies = document.cookie.split(';')
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i]
+    const eqPos = cookie.indexOf('=')
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  }
+}
+
+export default function ({ $axios, app, redirect, store }) {
   $axios.onRequest((config) => {
     config.headers.common['Content-Type'] = 'application/json'
     config.headers.common['Accept'] = 'application/json'
@@ -20,7 +31,8 @@ export default function ({ $axios, app, redirect }) {
       // console.log(response?.data?.error)
     } else if (response?.status === 401) {
       console.log(3)
-      await app.$auth.logout()
+      store.state.auth.loggedIn = false
+      deleteAllCookies()
       redirect('/login')
     } else if (response?.status === 500) {
       app.$toast.error('Server Error 🛑')
