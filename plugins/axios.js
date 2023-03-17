@@ -3,7 +3,7 @@ export default function ({ $axios, app, redirect }) {
     config.headers.common['Content-Type'] = 'application/json'
     config.headers.common['Accept'] = 'application/json'
   })
-  $axios.onError((error) => {
+  $axios.onError(async (error) => {
     const response = error?.response
     console.log(2, response)
     if (response?.status === 400) {
@@ -17,10 +17,10 @@ export default function ({ $axios, app, redirect }) {
         }
       }
 
-      console.log(response?.data?.error)
+      // console.log(response?.data?.error)
     } else if (response?.status === 401) {
       console.log(3)
-      app.$auth.logout()
+      await app.$auth.logout()
       redirect('/login')
     } else if (response?.status === 500) {
       app.$toast.error('Server Error 🛑')

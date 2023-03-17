@@ -41,7 +41,9 @@ export const actions = {
   addAnswers(_, payload) {
     const { data, isCompleted } = payload
     this.$axios
-      .$post('/api/answer/bulk/create', data)
+      .$post('/api/answer/bulk/create', {
+        answers: data
+      })
       .then((res) => {
         isCompleted(res)
       })

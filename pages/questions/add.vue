@@ -234,11 +234,11 @@
       addAnswers() {
         console.log(1);
         const data = this.answers.map(x => ({
-          question_id: this.question_id,
+          question_id: String(this.question_id),
           label: JSON.stringify(x.list.map(y => y.label)),
           text: JSON.stringify(x.list.map(y => y.text)),
-          choice: x.choice,
-          definition: x.variant,
+          choice: x.variant,
+          definition: x.choice,
           correct: (x.variant === this.correct)
         }))
 

@@ -85,7 +85,13 @@ export default {
           user: false,
           logout: { url: '/api/logout', method: 'post' },
         },
-        // autoLogout: false
+        autoLogout: true,
+        redirect: {
+          login: '/login',
+          logout: '/login',
+          callback: '/login',
+          home: '/'
+        }
       },
     },
   },
