@@ -17,7 +17,7 @@ jobs:
         run: |
           docker run --rm \
           --volume="$PWD:/app" \
-          node:16-alpine sh -c "cd /app && npm install && npm run build && npm run generate"
+          node:16-alpine sh -c "cd /app && npm install --global yarn || yarn install && yarn generate"
           
       - name: Deploy to Netlify
         uses: netlify/actions/cli@master
@@ -26,3 +26,25 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
           args: deploy --dir=dist --prod
+  telegram:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: NPM Install
+        run: |
+          cd ci-cd
+          npm install
+      - name: Telegram to Group
+        uses: actions/github-script@v6
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        with:
+          script: |
+            const script = require('./ci-cd/notify.js')
+            await script({context, telegram: {
+              token: process.env.TG_TOKEN,
+              chat_id: process.env.TG_CHAT_ID
+            })

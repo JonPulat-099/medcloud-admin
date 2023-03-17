@@ -54,7 +54,7 @@ export const actions = {
     this.$axios
       .$get('/api/product/item/get/' + id)
       .then((res) => {
-        if (Array.isArray(res)) commit('setProductItemDetails', res)
+        if (Array.isArray(res?.tariff)) commit('setProductItemDetails', res)
       })
       .catch((err) => {
         // do nothing

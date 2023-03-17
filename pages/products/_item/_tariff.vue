@@ -54,6 +54,14 @@
           <v-layout row wrap>
             <v-flex xs12 mt-4>
               <v-text-field
+                v-model="tariff.title"
+                label="Title"
+                outlined
+                :disabled="disabled_form"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 mt-4>
+              <v-text-field
                 v-model="tariff.period"
                 label="Period"
                 outlined
@@ -103,6 +111,7 @@ export default {
         period: '',
         amount: '',
         status: false,
+        title: '',
       },
       headers: [
         {
@@ -124,6 +133,18 @@ export default {
           value: 'status',
         },
         {
+          text: 'Amount',
+          align: 'center',
+          sortable: true,
+          value: 'amount',
+        },
+        {
+          text: 'Period',
+          align: 'center',
+          sortable: true,
+          value: 'period',
+        },
+        {
           text: 'Actions',
           align: 'center',
           sortable: false,
@@ -141,12 +162,12 @@ export default {
           href: '/products',
         },
         {
-          text: 'Products name',
+          text: 'Products item',
           disabled: false,
-          href: '/products/test',
+          href: '/products/' + this.item_info.product_id,
         },
         {
-          text: 'Tariffs',
+          text: this.item_info.title + ' : Tariffs',
           disabled: true,
           href: '/products/test/tariffs',
         },
@@ -173,6 +194,7 @@ export default {
         isCompleted: (res) => {
           if (res?.success && res?.success?.message) {
             this.$toast.success(res.success.message)
+            this.cancel()
           }
 
           this.disabled_form = false
@@ -182,7 +204,11 @@ export default {
       this.$store.dispatch('products/createTariff', payload)
     },
 
-    cancel() {},
+    cancel() {
+      this.modal_add_tariff = false
+      this.tariff.title = this.tariff.period = this.tariff.amount = ''
+      this.tariff.status = false
+    },
   },
 }
 </script>
