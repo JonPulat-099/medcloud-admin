@@ -5,8 +5,8 @@ module.exports = async ({ context, telegram }) => {
 
   let msg =
     `📣 Medcloud Alert` +
-    `${JSON.stringify(context)}` +
-    ` развёрнут на [BETA](https://beta.ipakyulibank.uz)`
+    `Admin panel updated` +
+    ` развёрнут на [BETA](https://admin-medcloud.netlify.app)`
 
   await axios.post(`${url}${telegram.token}/sendMessage`, {
     chat_id: telegram.chat_id,
