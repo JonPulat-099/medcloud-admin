@@ -1,178 +1,219 @@
 <template>
-  <v-card elevation="0">
-    <v-card-title primary-title class="flex-nowrap">
-      <v-tabs v-model="tab" align-with-title>
-        <v-tabs-slider color="yellow"></v-tabs-slider>
+  <keep-alive>
+    <v-card elevation="0">
+      <v-card-title primary-title class="flex-nowrap">
+        <v-tabs v-model="tab" align-with-title>
+          <v-tabs-slider color="yellow"></v-tabs-slider>
 
-        <v-tab v-for="item in items" :key="item">
-          {{ item }}
-        </v-tab>
-      </v-tabs>
-      <v-spacer></v-spacer>
-      <v-btn color="success">Add User</v-btn>
-    </v-card-title>
-    <v-card-text>
-      <v-tabs-items v-model="tab">
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-              <v-data-table
-                :headers="users_headers"
-                :items="user_list"
-                sort-by="calories"
-                class="elevation-1"
-              >
-                <template v-slot:item.fullname="{ item }">
-                  {{ item.name }} {{ item.surname }}
-                </template>
-                <template v-slot:item.status="{ item }">
-                  <v-chip
-                    class="ma-1"
-                    :color="item.is_confirmed == '1' ? 'green' : 'red'"
-                  >
-                    {{
-                      item.is_confirmed == '1' ? 'Confirmed' : 'Not Confirmed'
-                    }}
-                    <v-icon class="ml-1">{{
-                      item.is_confirmed == '1'
-                        ? 'mdi-check-decagram-outline'
-                        : 'mdi-close-octagon'
-                    }}</v-icon>
-                  </v-chip>
-                  <v-chip
-                    class="ma-1"
-                    :color="item.is_blocked == '0' ? 'green' : 'red'"
-                  >
-                    {{ item.is_blocked == '0' ? 'Not Blocked' : 'Blocked' }}
-                    <v-icon class="ml-1">{{
-                      item.is_blocked == '0'
-                        ? 'mdi-account-check'
-                        : 'mdi-account-cancel-outline'
-                    }}</v-icon>
-                  </v-chip>
-                </template>
-                <template v-slot:item.actions="{ item }">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        icon
-                        @click="blockUser(item)"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon medium>
-                          {{
-                            item.is_blocked == '0'
-                              ? 'mdi-lock'
-                              : 'mdi-lock-open'
-                          }}
-                        </v-icon>
-                      </v-btn>
-                    </template>
-                    <span>{{
-                      item.is_blocked == '0' ? 'Block user' : 'Unblock user'
-                    }}</span>
-                  </v-tooltip>
+          <v-tab v-for="item in items" :key="item">
+            {{ item }}
+          </v-tab>
+        </v-tabs>
+        <v-spacer></v-spacer>
+        <v-btn color="success">Add User</v-btn>
+      </v-card-title>
+      <v-card-text>
+        <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <v-card flat>
+              <v-card-text>
+                <v-data-table
+                  :headers="users_headers"
+                  :items="user_list"
+                  sort-by="calories"
+                  class="elevation-1"
+                >
+                  <template v-slot:item.fullname="{ item }">
+                    {{ item.name }} {{ item.surname }}
+                  </template>
+                  <template v-slot:item.status="{ item }">
+                    <v-chip
+                      class="ma-1"
+                      :color="item.is_confirmed == '1' ? 'green' : 'red'"
+                    >
+                      {{
+                        item.is_confirmed == '1' ? 'Confirmed' : 'Not Confirmed'
+                      }}
+                      <v-icon class="ml-1">{{
+                        item.is_confirmed == '1'
+                          ? 'mdi-check-decagram-outline'
+                          : 'mdi-close-octagon'
+                      }}</v-icon>
+                    </v-chip>
+                    <v-chip
+                      class="ma-1"
+                      :color="item.is_blocked == '0' ? 'green' : 'red'"
+                    >
+                      {{ item.is_blocked == '0' ? 'Not Blocked' : 'Blocked' }}
+                      <v-icon class="ml-1">{{
+                        item.is_blocked == '0'
+                          ? 'mdi-account-check'
+                          : 'mdi-account-cancel-outline'
+                      }}</v-icon>
+                    </v-chip>
+                  </template>
+                  <template v-slot:item.actions="{ item }">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          icon
+                          @click="blockUser(item)"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon medium>
+                            {{
+                              item.is_blocked == '0'
+                                ? 'mdi-lock'
+                                : 'mdi-lock-open'
+                            }}
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>{{
+                        item.is_blocked == '0' ? 'Block user' : 'Unblock user'
+                      }}</span>
+                    </v-tooltip>
 
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        icon
-                        @click="replanishCash(item)"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon medium> mdi-wallet-outline </v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Replenish</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        icon
-                        @click="editItem(item)"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon medium> mdi-account-check </v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Confirm</span>
-                  </v-tooltip>
-                </template>
-              </v-data-table>
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-              <v-data-table
-                :headers="inactive_headers"
-                :items="inactive_users"
-                sort-by="calories"
-                class="elevation-1"
-              >
-                <template v-slot:item.actions="{ item }">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        icon
-                        @click="editItem(item)"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-icon medium> mdi-account-check </v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Confirm</span>
-                  </v-tooltip>
-                </template></v-data-table
-              >
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card-text>
-    <v-dialog
-      v-model="modal_replanish"
-      scrollable
-      persistent
-      :overlay="false"
-      max-width="500px"
-      transition="dialog-transition"
-    >
-      <v-card>
-        <v-card-title primary-title> Replanish </v-card-title>
-        <v-card-text>
-          <v-text-field
-            label="Amount"
-            id="id"
-            v-model="selected_user.amount"
-            :disabled="disabled_form"
-          ></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red" :disabled="disabled_form" @click="cancelReplanish">Cancel</v-btn>
-          <v-btn color="success" :disabled="disabled_form" @click="replanishUserChash()">Submit</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-card>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          icon
+                          @click="replanishCash(item)"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon medium> mdi-wallet-outline </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Replenish</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          icon
+                          @click="editItem(item)"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon medium> mdi-account-check </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Confirm</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          icon
+                          @click="changeUserDetails(item)"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon medium> mdi-cog </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Settings</span>
+                    </v-tooltip>
+                  </template>
+                </v-data-table>
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card flat>
+              <v-card-text>
+                <v-data-table
+                  :headers="inactive_headers"
+                  :items="inactive_users"
+                  sort-by="calories"
+                  class="elevation-1"
+                >
+                  <template v-slot:item.actions="{ item }">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          icon
+                          @click="editItem(item)"
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon medium> mdi-account-check </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Confirm</span>
+                    </v-tooltip>
+                  </template></v-data-table
+                >
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-card-text>
+      <v-dialog
+        v-model="modal_replanish"
+        scrollable
+        persistent
+        :overlay="false"
+        max-width="500px"
+        transition="dialog-transition"
+      >
+        <v-card>
+          <v-card-title primary-title> Replanish </v-card-title>
+          <v-card-text>
+            <v-text-field
+              label="Amount"
+              id="id"
+              v-model="selected_user.amount"
+              :disabled="disabled_form"
+            ></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="red"
+              :disabled="disabled_form"
+              @click="cancelReplanish"
+              >Cancel</v-btn
+            >
+            <v-btn
+              color="success"
+              :disabled="disabled_form"
+              @click="replanishUserChash()"
+              >Submit</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog
+        v-model="modal_user_details"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+      >
+        <user-details
+          :user="user_details"
+          @closeModal=";(modal_user_details = false), (user_details = {})"
+        ></user-details>
+      </v-dialog>
+    </v-card>
+  </keep-alive>
 </template>
 
 <script>
 export default {
   name: 'Users',
   layout: 'account',
+  components: {
+    UserDetails: () =>
+      import(/* webpackPrefetch: true */ '@/components/UserDetails.vue'),
+  },
   data() {
     return {
       tab: '',
       items: ['All Users', 'Inactive Users'],
       modal_replanish: false,
       disabled_form: false,
+      modal_user_details: false,
       users_headers: [
         {
           text: '#',
@@ -243,6 +284,7 @@ export default {
         id: '',
         amount: '',
       },
+      user_details: {},
     }
   },
   computed: {
@@ -262,8 +304,17 @@ export default {
       }
     },
   },
-  beforeMount() {
-    this.$store.dispatch('users/getUserList')
+  async fetch({ store }) {
+    await store.dispatch('users/getUserList')
+  },
+  mounted() {
+    const query = this.$route.query
+    if (query.user) {
+      this.user_details = this.user_list?.find((x) => x.id == query.user)
+
+      if (this.user_details && Object.keys(this.user_details)?.length)
+        this.modal_user_details = true
+    }
   },
   methods: {
     async editItem(user) {
@@ -317,8 +368,13 @@ export default {
             this.cancelReplanish()
             this.$store.dispatch('users/getUserList')
           }
-        }
+        },
       })
+    },
+    changeUserDetails(user) {
+      this.modal_user_details = true
+      this.user_details = user
+      this.$router.replace({ query: { user: user.id } })
     },
   },
 }

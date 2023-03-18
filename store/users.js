@@ -1,6 +1,7 @@
 export const state = () => ({
   user_list: [],
   inactive_users: [],
+  user_products: [],
 })
 
 export const mutations = {
@@ -25,11 +26,15 @@ export const mutations = {
   },
 
   setUserCash(state, { id, amount }) {},
+
+  setUserProducts(state, products) {
+    state.user_products = products
+  },
 }
 
 export const actions = {
   async getUserList({ commit }) {
-    this.$axios
+    await this.$axios
       .$get('/api/clients/all')
       .then((result) => {
         if (result?.length) {
@@ -90,6 +95,29 @@ export const actions = {
       })
       .catch((err) => {
         toast.error('SomethingError')
+      })
+  },
+
+  getUserProducts({ commit }, id) {
+    this.$axios.$get('/api/client/product/get/' + id).then((res) => {
+      if (res.success) {
+        commit('setUserProducts', res?.success?.data ?? [])
+      }
+    })
+  },
+
+  addProduct({ dispatch }, payload) {
+    const { data, isCompleted } = payload
+    this.$axios
+      .$post('/api/client/product/subscribe', data)
+      .then((res) => {
+        isCompleted(res)
+        if (res.success) {
+          dispatch('getUserProducts', data.user_id)
+        }
+      })
+      .catch((err) => {
+        isCompleted(err)
       })
   },
 }

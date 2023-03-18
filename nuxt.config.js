@@ -23,7 +23,7 @@ export default {
 
   server: {
     host: '0.0.0.0',
-    port: 8080,
+    port: 8081,
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -90,8 +90,8 @@ export default {
           login: '/login',
           logout: '/login',
           callback: '/login',
-          home: '/login'
-        }
+          home: '/login',
+        },
       },
     },
   },
