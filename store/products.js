@@ -40,8 +40,7 @@ export const actions = {
     this.$axios
       .$get('/api/product/get/' + id)
       .then((resp) => {
-        console.log(11, resp)
-        if (Object.keys(resp)?.length) {
+        if (resp?.items) {
           commit('setProductInfo', resp)
         }
       })
@@ -95,7 +94,6 @@ export const actions = {
     this.$axios
       .$post('/api/product/tariff/create', data)
       .then((res) => {
-        console.log(res)
         isCompleted(res)
       })
       .catch((err) => {
