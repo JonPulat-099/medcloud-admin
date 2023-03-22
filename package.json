@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^36.0.1",
+    "@ckeditor/ckeditor5-vue2": "^3.0.1",
     "@nuxt/content": "^1.0.0",
     "@nuxtjs/auth-next": "5.0.0-1667386184.dfbbb54",
     "@nuxtjs/axios": "^5.13.6",

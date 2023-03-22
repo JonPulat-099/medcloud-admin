@@ -93,6 +93,11 @@ export default {
           title: 'Lessons',
           to: '/lessons',
         },
+        {
+          icon: 'mdi-test-tube',
+          title: 'Lab Values',
+          to: '/lab-values',
+        },
       ],
       miniVariant: false,
       right: true,
