@@ -17,7 +17,7 @@
         <div>
           <h4 class="mb-3">Question</h4>
         </div>
-        <Editor v-model="question" />
+        <c-keditor v-model="question" />
         <v-divider class="my-4"></v-divider>
         <div class="d-flex flex-wrap align-center justify-space-between mb-5">
           <h4 class="">Variants</h4>
@@ -87,7 +87,7 @@
               </v-layout>
               <div class="mt-4">
                 <p>Choice ({{ a.variant }})</p>
-                <Editor v-model="a.choice" />
+                <c-keditor v-model="a.choice" />
               </div>
             </v-flex>
           </v-layout>
@@ -105,6 +105,7 @@
     layout: 'account',
     components: {
       Editor: () => import('@/components/TextEditor'),
+      'c-keditor': () => import('@/components/Ckeditor.vue'),
     },
     data() {
       return {

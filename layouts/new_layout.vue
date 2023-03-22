@@ -48,26 +48,26 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Products',
-          to: '/products',
+          to: '/',
         },
         {
           icon: 'mdi-account',
-          title: 'Audience',
+          title: 'Community',
           to: '/users',
         },
         {
           icon: 'mdi-folder-play-outline',
-          title: 'Media files',
+          title: 'Audience',
           to: '/media-files',
         },
         {
           icon: 'mdi-text-box-outline',
           title: 'Email',
-          to: '#',
+          to: '/products',
         },
         {
           icon: 'mdi-head-question-outline',
-          title: 'Questions',
+          title: 'Coupons',
           to: '/questions',
         },
         {

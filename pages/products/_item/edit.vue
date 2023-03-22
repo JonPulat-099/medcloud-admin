@@ -3,9 +3,80 @@
     <v-card-title primary-title>
       <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
       <v-spacer></v-spacer>
-      <v-btn color="primary" @click="modal_create_productItem = true">
+      <v-menu bottom left offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="deep-purple lighten-2"
+            outlined
+            v-bind="attrs"
+            v-on="on"
+            icon
+            small
+            class="rounded-lg"
+          >
+            <v-icon>mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <template v-for="(f, i) in features">
+            <v-list-item v-if="f.to" :key="`features__${i}`" :to="f.to" nuxt>
+              <v-list-item-icon class="my-2 mr-3">
+                <v-icon>{{ f.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>{{ f.title }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item
+              v-else
+              :key="`features__${i}`"
+              :class="`${f.color}--text`"
+            >
+              <v-list-item-icon class="my-2 mr-3">
+                <v-icon :color="f.color">{{ f.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>{{ f.title }}</v-list-item-title>
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-menu>
+      <v-btn
+        color="deep-purple lighten-2"
+        outlined
+        small
+        class="mx-3 text-capitalize"
+        >Done</v-btn
+      >
+      <v-menu bottom left offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="deep-purple lighten-2"
+            v-bind="attrs"
+            v-on="on"
+            small
+            class="text-capitalize"
+          >
+            Publish
+            <v-icon right>mdi-menu-down</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <template>
+            <v-list-item>
+              <v-list-item-title>Publish</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>Draft</v-list-item-title>
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-menu>
+      <!-- <v-btn color="primary" @click="modal_create_productItem = true">
         <v-icon left>mdi-plus</v-icon>
-        Add Product Item</v-btn>
+        Add Product Item</v-btn
+      > -->
     </v-card-title>
     <v-card-text>
       <v-data-table
@@ -129,6 +200,32 @@ export default {
           value: 'actions',
         },
       ],
+      features: [
+        {
+          title: 'View Product',
+          icon: 'mdi-view-array-outline',
+          to: '#',
+          color: 'primary',
+        },
+        {
+          title: 'View Sales page',
+          icon: 'mdi-briefcase-eye',
+          to: '#',
+          color: 'primary',
+        },
+        {
+          title: 'Export subscribers',
+          icon: 'mdi-database-export',
+          to: '#',
+          color: 'primary',
+        },
+        {
+          title: 'Delete',
+          icon: 'mdi-delete',
+          to: '',
+          color: 'red',
+        },
+      ],
     }
   },
   computed: {
@@ -168,7 +265,7 @@ export default {
   methods: {
     cancelProduct() {
       this.modal_create_productItem = false
-      this.product.title = this.product.status = ""
+      this.product.title = this.product.status = ''
     },
     createProduct() {
       this.disabled_form = true
@@ -178,7 +275,7 @@ export default {
         product_id: this.$route.params.item,
       }
 
-      this.$store.dispatch("products/createProductItem", {
+      this.$store.dispatch('products/createProductItem', {
         data: payload,
         isCompleted: (res) => {
           if (res?.success) {
@@ -189,7 +286,7 @@ export default {
             this.$toast.error(res?.error?.message)
           }
           this.disabled_form = false
-        }
+        },
       })
     },
   },

@@ -3,136 +3,115 @@
     <v-card-title>
       Products
       <v-spacer></v-spacer>
-      <v-btn icon v-if="show_list" @click="show_list = !show_list">
-        <v-icon>mdi-view-comfy</v-icon>
-      </v-btn>
-      <v-btn icon v-else @click="show_list = !show_list">
-        <v-icon>mdi-view-list</v-icon>
-      </v-btn>
-      <v-btn color="success" class="ma-1" @click="modal_add_product = true"
-        >Add Product</v-btn
+      <v-btn color="primary" class="ma-1" @click="modal_add_product = true"
+        ><v-icon left>mdi-plus</v-icon> New Product</v-btn
       >
     </v-card-title>
     <v-card-text>
-      <template v-if="show_list">
-        <v-data-table
-          :headers="headers"
-          :items="products"
-          sort-by="calories"
-          class="elevation-1"
-        >
-          <template v-slot:item.type="{ item }">
-            <v-chip outlined class="pa-4">
-              <v-icon left
-                >mdi-{{
-                  item.type == 'test'
-                    ? 'file-document-check-outline'
-                    : 'file-video-outline'
-                }}</v-icon
+      <v-data-table
+        :headers="headers"
+        :items="products"
+        sort-by="calories"
+        class="elevation-1"
+        :search="search"
+        :footer-props="{
+          'items-per-page-options': [25, 50, -1],
+        }"
+        :items-per-page="25"
+      >
+        <template v-slot:top>
+          <v-text-field
+            outlined
+            dense
+            v-model="search"
+            placeholder="Search product"
+            class="mx-4"
+            prepend-inner-icon="mdi-magnify"
+          ></v-text-field>
+        </template>
+        <template v-slot:item.type="{ item }">
+          <v-chip outlined class="pa-4">
+            <v-icon left
+              >mdi-{{
+                item.type == 'test'
+                  ? 'file-document-check-outline'
+                  : 'file-video-outline'
+              }}</v-icon
+            >
+            {{ item.type }}
+          </v-chip>
+        </template>
+        <template v-slot:item.status="{ item }">
+          <v-chip color="primary" v-if="item.status == 'active'">
+            <v-icon left> mdi-check-circle </v-icon>
+            Published
+          </v-chip>
+          <v-btn
+            v-else
+            color="primary"
+            text
+            tile
+            class="text-body-2 rounded-lg text-capitalize"
+          >
+            <v-icon color="primary" left>mdi-circle-outline</v-icon>
+            <span>Draft</span>
+          </v-btn>
+        </template>
+
+        <template v-slot:item.actions="{ item }">
+          <v-menu bottom left offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="deep-purple lighten-2"
+                outlined
+                v-bind="attrs"
+                v-on="on"
+                icon
+                small
+                class="rounded-lg"
               >
-              {{ item.type }}
-            </v-chip>
-          </template>
-          <template v-slot:item.status="{ item }">
-            <v-chip
-              outlined
-              :color="item.status == 'active' ? 'green' : 'red'"
-              >{{ item.status }}</v-chip
-            ></template
-          >
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
+            </template>
 
-          <template v-slot:item.actions="{ item }">
-            <v-btn color="deep-purple lighten-2" text>
-              <v-icon>mdi-text-box-edit-outline</v-icon>
-            </v-btn>
-            <v-btn color="deep-purple lighten-2" text>
-              <v-icon>mdi-delete-outline</v-icon>
-            </v-btn>
-            <v-btn
-              color="deep-purple lighten-2"
-              text
-              @click="$router.push(`/products/${item.id}`)"
-            >
-              <v-icon>mdi-open-in-app</v-icon>
-            </v-btn>
-          </template></v-data-table
-        >
-      </template>
+            <v-list>
+              <template v-for="(f, i) in features">
+                <v-list-item
+                  v-if="f.to"
+                  :key="`features__${i}`"
+                  :to="f.to"
+                  nuxt
+                >
+                  <v-list-item-icon class="my-2 mr-3">
+                    <v-icon>{{ f.icon }}</v-icon>
+                  </v-list-item-icon>
 
-      <template v-else>
-        <v-layout row wrap>
-          <v-flex
-            v-for="p in products"
-            :key="`key_` + p.id"
-            lg3
-            md4
-            sm6
-            xs12
-            pa-2
-          >
-            <v-card
-              :loading="products.length == 0"
-              class="mx-auto product__card"
-            >
-              <template slot="progress">
-                <v-progress-linear
-                  color="deep-purple"
-                  height="10"
-                  indeterminate
-                ></v-progress-linear>
+                  <v-list-item-title>{{ f.title }}</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                  v-else
+                  :key="`features__${i}`"
+                  :class="`${f.color}--text`"
+                >
+                  <v-list-item-icon class="my-2 mr-3">
+                    <v-icon :color="f.color">{{ f.icon }}</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-title>{{ f.title }}</v-list-item-title>
+                </v-list-item>
               </template>
-
-              <v-img
-                height="250"
-                src="https://www.webstoresl.com/sellercenter/assets/images/no-product-image.png"
-              ></v-img>
-
-              <v-card-title>{{ p.title }}</v-card-title>
-
-              <v-card-text>
-                <div class="text-truncate">
-                  {{ p.description }}
-                </div>
-                <div class="my-2">
-                  Type:
-                  <v-chip outlined class="pa-4">
-                    <v-icon left
-                      >mdi-{{
-                        p.type == 'test'
-                          ? 'file-document-check-outline'
-                          : 'file-video-outline'
-                      }}</v-icon
-                    >
-                    {{ p.type }}
-                  </v-chip>
-                </div>
-                <div>
-                  Status:
-                  <v-chip
-                    outlined
-                    :color="p.status == 'active' ? 'green' : 'red'"
-                    >{{ p.status }}</v-chip
-                  >
-                </div>
-              </v-card-text>
-
-              <v-divider class="mx-4"></v-divider>
-
-              <v-card-actions>
-                <v-btn color="deep-purple lighten-2" text>
-                  <v-icon>mdi-text-box-edit-outline</v-icon>
-                </v-btn>
-                <v-btn color="deep-purple lighten-2" text>
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-btn>
-                <v-btn color="deep-purple lighten-2" text>
-                  <v-icon>mdi-open-in-app</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </template>
+            </v-list>
+          </v-menu>
+          <v-btn
+            color="deep-purple lighten-2 text-capitalize"
+            outlined
+            small
+            @click="$router.push(`/products/${item.id}/edit`)"
+          >
+            Edit
+          </v-btn>
+        </template>
+      </v-data-table>
     </v-card-text>
 
     <v-dialog
@@ -144,13 +123,13 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title primary-title> Add Product </v-card-title>
+        <v-card-title primary-title> New Product </v-card-title>
         <v-card-text>
           <v-layout row wrap>
             <v-flex xs12 mt-4>
               <v-text-field
                 v-model="product.title"
-                label="Title"
+                label="Name"
                 outlined
                 :disabled="disabled_form"
               ></v-text-field>
@@ -160,7 +139,7 @@
                 v-model="product.description"
                 outlined
                 name="input-7-4"
-                label="Outlined textarea"
+                label="Description"
                 :disabled="disabled_form"
               ></v-textarea>
             </v-flex>
@@ -220,11 +199,11 @@ export default {
     return {
       modal_add_product: false,
       disabled_form: false,
-      show_list: true,
+      search: '',
       types: [
         {
           type: 'test',
-          name: 'Qbank',
+          name: 'Qbank (test)',
         },
         {
           type: 'lesson',
@@ -240,34 +219,54 @@ export default {
       },
       headers: [
         {
-          text: '#',
+          text: 'Name',
           align: 'left',
-          sortable: false,
-          value: 'id',
-        },
-        {
-          text: 'Title',
-          align: 'left',
-          sortable: false,
+          sortable: true,
           value: 'title',
         },
         {
           text: 'Type',
           align: 'left',
-          sortable: false,
+          sortable: true,
           value: 'type',
         },
         {
           text: 'Status',
           align: 'center',
-          sortable: false,
+          sortable: true,
           value: 'status',
         },
         {
-          text: 'Actions',
+          text: '',
           align: 'center',
           sortable: false,
           value: 'actions',
+        },
+      ],
+      features: [
+        {
+          title: 'View Product',
+          icon: 'mdi-view-array-outline',
+          to: '#',
+          color: 'primary',
+        },
+        {
+          title: 'View Sales page',
+          icon: 'mdi-briefcase-eye',
+          to: '#',
+          color: 'primary',
+        },
+        {
+          title: 'Export subscribers',
+          icon: 'mdi-database-export',
+          to: '#',
+          color: 'primary',
+        },
+        {
+          title: 'Delete',
+          icon: 'mdi-delete',
+          to: '',
+          color: 'red',
         },
       ],
     }

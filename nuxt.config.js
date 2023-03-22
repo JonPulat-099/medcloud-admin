@@ -49,7 +49,6 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
-    '@nuxt/content',
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
   ],
@@ -120,7 +119,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
@@ -131,6 +130,10 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
         },
+        light: {
+          primary: "#2C364A",
+          secondary: "#008DD2"
+        }
       },
     },
   },
