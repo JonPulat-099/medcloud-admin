@@ -83,7 +83,7 @@
       <div v-if="product_items.length" class="actions__list">
         <v-btn
           class="text-capitalize"
-          color="primaru"
+          color="primary"
           text
           @click="modal_create_productItem = true"
         >
