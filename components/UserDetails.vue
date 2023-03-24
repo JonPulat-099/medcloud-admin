@@ -60,6 +60,12 @@
           dense
         ></v-text-field>
       </v-flex>
+      <v-flex xs12 sm6 md4 lg3 class="pa-2">
+        <v-btn color="primary" outlined class="text-capitalize">
+          <v-icon left>mdi-content-save-outline</v-icon>
+          Save
+        </v-btn>
+      </v-flex>
     </v-layout>
     <v-divider></v-divider>
     <v-card>
@@ -68,14 +74,18 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-text-field
           v-model="search"
-          append-icon="mdi-magnify"
+          prepend-inner-icon="mdi-magnify"
           label="Search"
           single-line
           hide-details
+          outlined
+          dense
         ></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn color="success" @click="modal_add_product = true"
-          >Add Product</v-btn
+        <v-btn color="primary" @click="modal_add_product = true" class="text-capitalize"
+          >
+          <v-icon left>mdi-plus</v-icon>
+          Add Product</v-btn
         >
       </v-card-title>
       <v-data-table
@@ -187,32 +197,32 @@ export default {
       details: {},
       search: '',
       headers: [
+        // {
+        //   text: '#',
+        //   align: 'left',
+        //   sortable: false,
+        //   value: 'id',
+        // },
         {
-          text: '#',
+          text: 'Name',
           align: 'left',
           sortable: false,
-          value: 'id',
+          value: 'name',
         },
+        // {
+        //   text: 'Type',
+        //   align: 'left',
+        //   sortable: false,
+        //   value: 'type',
+        // },
         {
-          text: 'Title',
-          align: 'left',
-          sortable: false,
-          value: 'title',
-        },
-        {
-          text: 'Type',
-          align: 'left',
-          sortable: false,
-          value: 'type',
-        },
-        {
-          text: 'Status',
+          text: 'Expired Date',
           align: 'center',
           sortable: false,
-          value: 'status',
+          value: 'expiry',
         },
         {
-          text: 'Actions',
+          text: '',
           align: 'center',
           sortable: false,
           value: 'actions',
@@ -239,6 +249,7 @@ export default {
   },
   watch: {
     user(val) {
+      console.log(1, val);
       this.details = val
     },
     'add_product.item_id'(val) {
@@ -252,6 +263,10 @@ export default {
     },
   },
   beforeMount() {
+    console.log(2, this.details);
+    this.details = this.user
+    console.log(3, this.details);
+
     this.$store.dispatch('users/getUserProducts', this.user.id)
   },
   mounted() {

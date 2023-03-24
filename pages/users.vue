@@ -2,152 +2,202 @@
   <keep-alive>
     <v-card elevation="0">
       <v-card-title primary-title class="flex-nowrap">
-        <v-tabs v-model="tab" align-with-title>
+        <!-- <v-tabs v-model="tab" align-with-title>
           <v-tabs-slider color="yellow"></v-tabs-slider>
 
           <v-tab v-for="item in items" :key="item">
             {{ item }}
           </v-tab>
-        </v-tabs>
+        </v-tabs> -->
+        Audience
         <v-spacer></v-spacer>
-        <v-btn color="success">Add User</v-btn>
+        <v-btn color="primary" outlined class="text-capitalize">
+          <v-icon left>mdi-database-export</v-icon>
+          Export All</v-btn
+        >
+        <v-btn color="primary" class="ma-2 text-capitalize"
+          ><v-icon left>mdi-plus</v-icon> Add person</v-btn
+        >
       </v-card-title>
       <v-card-text>
-        <v-tabs-items v-model="tab">
-          <v-tab-item>
-            <v-card flat>
-              <v-card-text>
-                <v-data-table
-                  :headers="users_headers"
-                  :items="user_list"
-                  sort-by="calories"
-                  class="elevation-1"
-                >
-                  <template v-slot:item.fullname="{ item }">
-                    {{ item.name }} {{ item.surname }}
-                  </template>
-                  <template v-slot:item.status="{ item }">
-                    <v-chip
-                      class="ma-1"
-                      :color="item.is_confirmed == '1' ? 'green' : 'red'"
-                    >
-                      {{
-                        item.is_confirmed == '1' ? 'Confirmed' : 'Not Confirmed'
-                      }}
-                      <v-icon class="ml-1">{{
-                        item.is_confirmed == '1'
-                          ? 'mdi-check-decagram-outline'
-                          : 'mdi-close-octagon'
-                      }}</v-icon>
-                    </v-chip>
-                    <v-chip
-                      class="ma-1"
-                      :color="item.is_blocked == '0' ? 'green' : 'red'"
-                    >
-                      {{ item.is_blocked == '0' ? 'Not Blocked' : 'Blocked' }}
-                      <v-icon class="ml-1">{{
-                        item.is_blocked == '0'
-                          ? 'mdi-account-check'
-                          : 'mdi-account-cancel-outline'
-                      }}</v-icon>
-                    </v-chip>
-                  </template>
-                  <template v-slot:item.actions="{ item }">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          icon
-                          @click="blockUser(item)"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon medium>
-                            {{
-                              item.is_blocked == '0'
-                                ? 'mdi-lock'
-                                : 'mdi-lock-open'
-                            }}
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <span>{{
-                        item.is_blocked == '0' ? 'Block user' : 'Unblock user'
-                      }}</span>
-                    </v-tooltip>
+        <v-data-table
+          :headers="users_headers"
+          :items="user_list"
+          sort-by="calories"
+          class="elevation-1"
+          :search="search"
+        >
+          <template v-slot:top>
+            <v-row justify-space-between align-center class="ma-0 pa-4">
+              <v-menu
+                bottom
+                origin="center center"
+                transition="scale-transition"
+                offset-y
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                    class="text-capitalize d-block"
+                    height="40"
+                  >
+                    <v-icon left>mdi-filter-variant</v-icon>
+                    Filter
+                  </v-btn>
+                </template>
 
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          icon
-                          @click="replanishCash(item)"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon medium> mdi-wallet-outline </v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Replenish</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          icon
-                          @click="editItem(item)"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon medium> mdi-account-check </v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Confirm</span>
-                    </v-tooltip>
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          icon
-                          @click="changeUserDetails(item)"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon medium> mdi-cog </v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Settings</span>
-                    </v-tooltip>
-                  </template>
-                </v-data-table>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-          <v-tab-item>
-            <v-card flat>
-              <v-card-text>
-                <v-data-table
-                  :headers="inactive_headers"
-                  :items="inactive_users"
-                  sort-by="calories"
-                  class="elevation-1"
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-icon class="my-2 mr-3">
+                      <v-icon>mdi-clock-time-three-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Last active</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-icon class="my-2 mr-3">
+                      <v-icon>mdi-account-lock-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Inactive</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <v-text-field
+                outlined
+                dense
+                v-model="search"
+                placeholder="Search product"
+                class="mx-4"
+                prepend-inner-icon="mdi-magnify"
+                hide-details
+              ></v-text-field>
+              <v-menu
+                bottom
+                origin="center center"
+                transition="scale-transition"
+                offset-y
+                height="40"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    class="text-capitalize"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                  >
+                    <v-icon left>mdi-sort</v-icon>
+                    Last active
+                  </v-btn>
+                </template>
+
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-icon class="my-2 mr-3">
+                      <v-radio value="true" selected></v-radio>
+                    </v-list-item-icon>
+                    <v-list-item-title>Last active</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-icon class="my-2 mr-3">
+                      <v-radio value="true" selected></v-radio>
+                    </v-list-item-icon>
+                    <v-list-item-title>Inactive</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-row>
+          </template>
+          <template v-slot:item.fullname="{ item }">
+            {{ item.name }} {{ item.surname }}
+          </template>
+          <template v-slot:item.status="{ item }">
+            <v-chip
+              class="ma-1"
+              :outlined="item.is_confirmed == '0'"
+              :color="item.is_confirmed == '1' ? 'primary' : 'red'"
+            >
+              <v-icon left>{{
+                item.is_confirmed == '1'
+                  ? 'mdi-check-decagram-outline'
+                  : 'mdi-close-octagon'
+              }}</v-icon>
+              {{ item.is_confirmed == '1' ? 'Confirmed' : 'Not Confirmed' }}
+            </v-chip>
+
+            <v-chip
+              class="ma-1"
+              :outlined="item.is_blocked == '0'"
+              :color="item.is_blocked == '0' ? 'primary' : 'red'"
+            >
+              {{ item.is_blocked == '0' ? 'Not Blocked' : 'Blocked' }}
+              <v-icon right>{{
+                item.is_blocked == '0'
+                  ? 'mdi-account-check'
+                  : 'mdi-account-cancel-outline'
+              }}</v-icon>
+            </v-chip>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-menu bottom left offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="deep-purple lighten-2"
+                  outlined
+                  v-bind="attrs"
+                  v-on="on"
+                  icon
+                  small
+                  class="rounded-lg"
                 >
-                  <template v-slot:item.actions="{ item }">
-                    <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          icon
-                          @click="editItem(item)"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon medium> mdi-account-check </v-icon>
-                        </v-btn>
-                      </template>
-                      <span>Confirm</span>
-                    </v-tooltip>
-                  </template></v-data-table
-                >
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
+                  <v-icon>mdi-dots-horizontal</v-icon>
+                </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item @click="blockUser(item)">
+                  <v-list-item-icon class="my-2 mr-3">
+                    <v-icon medium>
+                      {{
+                        item.is_blocked == '0' ? 'mdi-lock' : 'mdi-lock-open'
+                      }}
+                    </v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-title>{{
+                    item.is_blocked == '0' ? 'Block user' : 'Unblock user'
+                  }}</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="replanishCash(item)">
+                  <v-list-item-icon class="my-2 mr-3">
+                    <v-icon medium> mdi-wallet-outline </v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-title>Replanish</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="editItem(item)">
+                  <v-list-item-icon class="my-2 mr-3">
+                    <v-icon medium> mdi-account-check </v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-title>Confirm user</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-btn
+              color="deep-purple lighten-2 text-capitalize"
+              outlined
+              small
+              @click="changeUserDetails(item)"
+            >
+              Edit
+            </v-btn>
+          </template>
+        </v-data-table>
       </v-card-text>
       <v-dialog
         v-model="modal_replanish"
@@ -161,7 +211,10 @@
           <v-card-title primary-title> Replanish </v-card-title>
           <v-card-text>
             <v-text-field
+            class="py-2"
               label="Amount"
+              outlined
+              dense
               id="id"
               v-model="selected_user.amount"
               :disabled="disabled_form"
@@ -176,7 +229,7 @@
               >Cancel</v-btn
             >
             <v-btn
-              color="success"
+              color="primary"
               :disabled="disabled_form"
               @click="replanishUserChash()"
               >Submit</v-btn
@@ -214,13 +267,8 @@ export default {
       modal_replanish: false,
       disabled_form: false,
       modal_user_details: false,
+      search: '',
       users_headers: [
-        {
-          text: '#',
-          align: 'center',
-          sortable: false,
-          value: 'id',
-        },
         {
           text: 'Fullname',
           align: 'center',
@@ -251,34 +299,7 @@ export default {
           sortable: false,
           value: 'status',
         },
-        { text: 'Actions', value: 'actions', sortable: false },
-      ],
-      inactive_headers: [
-        {
-          text: '#',
-          align: 'center',
-          sortable: false,
-          value: 'id',
-        },
-        {
-          text: 'Name',
-          align: 'center',
-          sortable: false,
-          value: 'name',
-        },
-        {
-          text: 'Surname',
-          align: 'center',
-          sortable: false,
-          value: 'surname',
-        },
-        {
-          text: 'Patronym',
-          align: 'center',
-          sortable: false,
-          value: 'patronym',
-        },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: '', value: 'actions', sortable: false },
       ],
       selected_user: {
         id: '',

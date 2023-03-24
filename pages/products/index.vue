@@ -12,7 +12,7 @@
         :headers="headers"
         :items="products"
         sort-by="calories"
-        class="elevation-1"
+        class="elevation-1 pt-4"
         :search="search"
         :footer-props="{
           'items-per-page-options': [25, 50, -1],
@@ -25,7 +25,7 @@
             dense
             v-model="search"
             placeholder="Search product"
-            class="mx-4"
+            class="mx-4 mt-2"
             prepend-inner-icon="mdi-magnify"
           ></v-text-field>
         </template>
